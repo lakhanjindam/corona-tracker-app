@@ -1,0 +1,32 @@
+.Infobox {
+  display: flex;
+  flex: 1;
+  cursor: pointer;
+}
+/* leaving last child, each child should get margin right of 15px */
+.Infobox:not(:last-child) {
+  margin-right: 20px;
+}
+.Infobox__cases {
+  color: red;
+  font-weight: 600;
+  font-size: 30px;
+  margin-bottom: 0.5rem;
+}
+.Infobox__total {
+  color: #98a39b;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  margin-top: 15px !important;
+}
+@media (max-width: 500px) {
+  .Infobox {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
+
+  .Infobox:last-child {
+    margin-right: 20px;
+  }
+}
