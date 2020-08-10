@@ -11,7 +11,10 @@ body {
 }
 .app__dropdown {
   background-color: white;
-  padding-top: 3px;
+  padding-top: 10px;
+}
+#label {
+  padding: 3px;
 }
 .app__left {
   flex: 0.9;
@@ -25,6 +28,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.table__header {
+  display: flex;
+  justify-content: space-between;
+}
+.table__header strong {
+  color: black;
+  font-size: 18px;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 .app_graph {
   margin-top: 50px;
@@ -49,6 +61,11 @@ body {
 @media (max-width: 500px) {
   .app__stats {
     text-align: center;
+    flex-direction: column;
+  }
+  .table__header {
+    height: 80px;
+    justify-content: space-between;
     flex-direction: column;
   }
 }

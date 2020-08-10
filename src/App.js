@@ -11,7 +11,11 @@ import {
 import InfoBox from "./components/InfoBox";
 import Map from "./components/Map";
 import Table from "./components/Table";
-import { sortData } from "./utils/sortData";
+import {
+  sortDataCases,
+  sortDataRecovered,
+  sortDataDeaths,
+} from "./utils/sortData";
 import LineGraph from "./components/LineGraph";
 import "leaflet/dist/leaflet.css";
 import { prettyPrint } from "./utils/prettyPrint";
@@ -25,6 +29,7 @@ const App = () => {
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]);
   const [casesType, setCasesType] = useState("cases");
+  const [value, setValue] = useState("cases");
 
   //* For initial state get worldwide data
   useEffect(() => {
@@ -38,6 +43,7 @@ const App = () => {
   //*Link: https://disease.sh/v3/covid-19/countries
   //*It loads once when the component is loaded and not again
   //*now by adding dependency as countries it loads every time when countries state will change
+
   useEffect(() => {
     const getCountriesData = async () => {
       await fetch("https://disease.sh/v3/covid-19/countries")
@@ -49,7 +55,7 @@ const App = () => {
               value: country.countryInfo.iso2, //*USA, UK
             };
           });
-          const sortedData = sortData(data);
+          const sortedData = sortDataCases(data);
           setTableData(sortedData);
           setMapCountries(data);
           setCountries(countries);
@@ -57,6 +63,24 @@ const App = () => {
     };
     getCountriesData();
   }, []);
+
+  useEffect(() => {
+    const onChangeData = () => {
+      let sortedData;
+      if (value === "recovered") {
+        sortedData = sortDataRecovered(mapCountries);
+      } else if (value === "deaths") {
+        sortedData = sortDataDeaths(mapCountries);
+      } else {
+        sortedData = sortDataCases(mapCountries);
+      }
+      setTableData(sortedData);
+      console.log(sortedData);
+    };
+
+    onChangeData();
+  }, [value]);
+
   //*change the select text based on country selected
   const changeCountry = async (event) => {
     const countryCode = event.target.value;
@@ -75,6 +99,7 @@ const App = () => {
         setMapZoom(4);
       });
   };
+
   return (
     <div className="app">
       <div className="app__left">
@@ -138,8 +163,26 @@ const App = () => {
       </div>
       <Card className="app_right">
         <CardContent className="card-content">
-          <h3>Live cases by country</h3>
-          <Table countries={tableData}></Table>
+          <div className="table__header">
+            <h3>Live cases by country</h3>
+            <FormControl>
+              <InputLabel id="demo-controlled-open-select-label">
+                <strong>Sort By</strong>
+              </InputLabel>
+              <Select
+                labelId="demo-controlled-open-select-label"
+                id="demo-controlled-open-select"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              >
+                <MenuItem value="cases">cases</MenuItem>
+                <MenuItem value="recovered">recovered</MenuItem>
+                <MenuItem value="deaths">deaths</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+
+          <Table countries={tableData} types={value}></Table>
           <h3 style={{ margin: "50px 0px" }}>
             {country} {casesType} graph
           </h3>

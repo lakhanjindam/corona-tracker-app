@@ -3,7 +3,11 @@ import { Line } from "react-chartjs-2";
 import numeral from "numeral";
 const options = {
   legend: {
-    display: false,
+    display: true,
+    position: "top",
+    labels: {
+      fontColor: "rgb(0, 0, 0)",
+    },
   },
   elements: {
     point: {
@@ -23,6 +27,13 @@ const options = {
   scales: {
     xAxes: [
       {
+        gridLines: {
+          //* Dont show the grid lines of y axis
+          display: true,
+        },
+        ticks: {
+          fontColor: "##000",
+        },
         type: "time",
         time: {
           //* format in which you wanna display the data
@@ -35,9 +46,10 @@ const options = {
       {
         gridLines: {
           //* Dont show the grid lines of y axis
-          display: false,
+          display: true,
         },
         ticks: {
+          fontColor: "##000",
           // Include a dollar sign in the ticks
           callback: function (value, index, values) {
             return numeral(value).format("0a");
@@ -90,10 +102,18 @@ const LineGraph = ({ casesType, ...props }) => {
       {/* you can also use data?.length (equivalent to)-> data && data.length */}
       {data?.length > 0 && (
         <Line
+          backgroundColor="#000"
           options={options}
           data={{
             datasets: [
               {
+                label: `${
+                  props.selected === "recovered"
+                    ? "recovered"
+                    : props.selected === "deaths"
+                    ? "deaths"
+                    : "cases"
+                }`,
                 backgroundColor: `${
                   props.selected === "recovered"
                     ? "rgba(91, 235, 52,0.5)"

@@ -1,6 +1,7 @@
 import React from "react";
 import "./css/InfoBox.css";
 import { Card, CardContent, Typography } from "@material-ui/core";
+import numeral from "numeral";
 const InfoBox = ({ title, cases, total, ...props }) => {
   return (
     <Card
@@ -35,7 +36,8 @@ const InfoBox = ({ title, cases, total, ...props }) => {
           {cases}
         </h2>
         <Typography className="Infobox__total" color="textSecondary">
-          {total} Total
+          <strong>Total: </strong>
+          {numeral(total).format("0,0")}
         </Typography>
         {/*Corona virus total */}
       </CardContent>
