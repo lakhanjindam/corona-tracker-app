@@ -2,14 +2,14 @@ import React from "react";
 import "./css/Table.css";
 import numeral from "numeral";
 
-const Table = ({ countries, types }) => {
+const Table = ({ countries, types, darkMode }) => {
   //* Sort the table by deaths, cases and recovered for all country
   return (
     <div className="table">
       {types === "cases"
         ? countries.map(({ country, cases }) => {
             return (
-              <tr>
+              <tr className={`${darkMode && "table__dark"}`}>
                 <td>{country}</td>
                 <td>
                   <strong>{numeral(cases).format("0,0")}</strong>

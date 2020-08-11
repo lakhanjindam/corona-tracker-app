@@ -8,6 +8,7 @@ const InfoBox = ({ title, cases, total, ...props }) => {
       onClick={props.onClick}
       className="Infobox"
       style={{
+        backgroundColor: `${props.darkMode ? "black" : "white"}`,
         borderTop: `${
           props.active
             ? `10px solid ${props.color === "green" ? "greenyellow" : "red"}`
@@ -21,7 +22,13 @@ const InfoBox = ({ title, cases, total, ...props }) => {
           className="Infobox__title"
           color="textSecondary"
           style={{
-            color: `${props.active ? `${props.color}` : "None"}`,
+            color: `${
+              props.active
+                ? `${props.color}`
+                : props.darkMode
+                ? "white"
+                : "black"
+            }`,
           }}
         >
           {title}
@@ -30,12 +37,21 @@ const InfoBox = ({ title, cases, total, ...props }) => {
         <h2
           className="Infobox__cases"
           style={{
-            color: `${props.active ? `${props.color}` : "None"}`,
+            color: `${
+              props.active
+                ? `${props.color}`
+                : props.darkMode
+                ? "white"
+                : "black"
+            }`,
           }}
         >
           {cases}
         </h2>
-        <Typography className="Infobox__total" color="textSecondary">
+        <Typography
+          className="Infobox__total"
+          color={`${props.darkMode ? "secondary" : "textPrimary"}`}
+        >
           <strong>Total: </strong>
           {numeral(total).format("0,0")}
         </Typography>

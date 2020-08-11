@@ -7,7 +7,12 @@ import {
   InputLabel,
   Card,
   CardContent,
+  FormGroup,
+  FormControlLabel,
+  Switch,
+  withStyles,
 } from "@material-ui/core";
+import { purple } from "@material-ui/core/colors";
 import InfoBox from "./components/InfoBox";
 import Map from "./components/Map";
 import Table from "./components/Table";
@@ -30,6 +35,7 @@ const App = () => {
   const [mapCountries, setMapCountries] = useState([]);
   const [casesType, setCasesType] = useState("cases");
   const [value, setValue] = useState("cases");
+  const [darkMode, setDarkMode] = useState(false);
 
   //* For initial state get worldwide data
   useEffect(() => {
@@ -79,7 +85,7 @@ const App = () => {
     };
 
     onChangeData();
-  }, [value]);
+  }, [mapCountries, value]);
 
   //*change the select text based on country selected
   const changeCountry = async (event) => {
@@ -100,13 +106,58 @@ const App = () => {
       });
   };
 
+  const PurpleSwitch = withStyles({
+    switchBase: {
+      color: purple[300],
+      "&$checked": {
+        color: purple[500],
+      },
+      "&$checked + $track": {
+        backgroundColor: purple[500],
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
+
+  const handleChange = (event) => {
+    //* setting the state to dark mode
+    // console.log(event.target.checked);
+    return setDarkMode(event.target.checked);
+  };
   return (
-    <div className="app">
+    <div className={`app ${darkMode && "app__dark"}`}>
       <div className="app__left">
         <div className="app__header">
-          <h1>Covid19 tracker app</h1>
-          <FormControl className="app__dropdown" style={{}}>
-            <InputLabel id="label" style={{ fontSize: "20px" }}>
+          <h1 style={{ color: `${darkMode ? "white" : "black"}` }}>
+            Covid19 tracker app
+          </h1>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <PurpleSwitch
+                  checked={darkMode}
+                  onChange={handleChange}
+                  name="toggler"
+                />
+              }
+              label="Dark Mode"
+            />
+          </FormGroup>
+          <FormControl
+            className="app__dropdown"
+            style={{
+              backgroundColor: `${darkMode ? "black" : "white"}`,
+              border: `${darkMode ? "2px solid white" : "None"}`,
+            }}
+          >
+            <InputLabel
+              id="label"
+              style={{
+                color: `${darkMode ? "white" : "black"}`,
+                fontSize: "20px",
+              }}
+            >
               Country
             </InputLabel>
             <Select
@@ -114,7 +165,10 @@ const App = () => {
               id="select"
               variant="outlined"
               value={country}
-              style={{ width: "150px" }}
+              style={{
+                color: `${darkMode ? "white" : "black"}`,
+                width: "150px",
+              }}
               onChange={changeCountry}
             >
               <MenuItem value="Worldwide">Worldwide</MenuItem>
@@ -130,6 +184,7 @@ const App = () => {
         </div>
         <div className="app__stats">
           <InfoBox
+            darkMode={darkMode}
             color="red"
             active={casesType === "cases"}
             onClick={(e) => setCasesType("cases")}
@@ -138,6 +193,7 @@ const App = () => {
             total={countryInfo.cases}
           ></InfoBox>
           <InfoBox
+            darkMode={darkMode}
             color="green"
             active={casesType === "recovered"}
             onClick={(e) => setCasesType("recovered")}
@@ -146,6 +202,7 @@ const App = () => {
             total={countryInfo.recovered}
           ></InfoBox>
           <InfoBox
+            darkMode={darkMode}
             color="red"
             active={casesType === "deaths"}
             onClick={(e) => setCasesType("deaths")}
@@ -161,18 +218,31 @@ const App = () => {
           zoom={mapZoom}
         ></Map>
       </div>
-      <Card className="app_right">
-        <CardContent className="card-content">
+      <Card className="app__right">
+        <CardContent
+          className="card-content"
+          style={{
+            backgroundColor: `${darkMode ? "#545352" : "white"}`,
+            border: `${darkMode ? "2px solid black" : "None"}`,
+          }}
+        >
           <div className="table__header">
-            <h3>Live cases by country</h3>
+            <h3 style={{ color: `${darkMode ? "white" : "black"}` }}>
+              Live cases by country
+            </h3>
             <FormControl>
               <InputLabel id="demo-controlled-open-select-label">
-                <strong>Sort By</strong>
+                <strong style={{ color: `${darkMode ? "white" : "black"}` }}>
+                  Sort By
+                </strong>
               </InputLabel>
               <Select
                 labelId="demo-controlled-open-select-label"
                 id="demo-controlled-open-select"
                 value={value}
+                style={{
+                  color: `${darkMode ? "white" : "black"}`,
+                }}
                 onChange={(e) => setValue(e.target.value)}
               >
                 <MenuItem value="cases">cases</MenuItem>
@@ -182,11 +252,21 @@ const App = () => {
             </FormControl>
           </div>
 
-          <Table countries={tableData} types={value}></Table>
-          <h3 style={{ margin: "50px 0px" }}>
+          <Table
+            countries={tableData}
+            types={value}
+            darkMode={darkMode}
+          ></Table>
+          <h3
+            style={{
+              color: `${darkMode ? "white" : "black"}`,
+              margin: "50px 0px",
+            }}
+          >
             {country} {casesType} graph
           </h3>
           <LineGraph
+            darkMode={darkMode}
             selected={casesType}
             className="app_graph"
             casesType={casesType}

@@ -14,3 +14,11 @@
 .table tr:nth-of-type(odd) {
   background-color: #e8d9d9;
 }
+.table__dark:nth-of-type(even) {
+  background-color: white !important;
+  color: black !important;
+}
+.table__dark:nth-of-type(odd) {
+  background-color: black !important;
+  color: white !important;
+}
