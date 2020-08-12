@@ -7,7 +7,7 @@ body {
 .app {
   display: flex;
   padding: 20px;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 .app__dark {
   background-color: #545352;
@@ -20,8 +20,7 @@ body {
   padding: 3px;
 }
 .app__left {
-  flex: 0.9;
-  /* background-color: grey; */
+  flex: 0.95;
 }
 .app__right {
   display: flex;
@@ -31,6 +30,11 @@ body {
   margin: 10px 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+.app__header__content {
+  width: 700px;
+  display: flex;
   justify-content: space-between;
 }
 .table__header {
@@ -71,5 +75,19 @@ body {
     height: 80px;
     justify-content: space-between;
     flex-direction: column;
+  }
+  .app__header {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .app__header__content {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    padding-left: 30px;
+    padding-right: 80px;
+  }
+  .app__logo {
+    align-self: center;
   }
 }

@@ -12,7 +12,7 @@ import {
   Switch,
   withStyles,
 } from "@material-ui/core";
-import { purple } from "@material-ui/core/colors";
+import { cyan, blueGrey } from "@material-ui/core/colors";
 import InfoBox from "./components/InfoBox";
 import Map from "./components/Map";
 import Table from "./components/Table";
@@ -21,9 +21,11 @@ import {
   sortDataRecovered,
   sortDataDeaths,
 } from "./utils/sortData";
+import { motion } from "framer-motion";
 import LineGraph from "./components/LineGraph";
 import "leaflet/dist/leaflet.css";
 import { prettyPrint } from "./utils/prettyPrint";
+import CovidLogo from "./components/Avatar";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
@@ -108,12 +110,12 @@ const App = () => {
 
   const PurpleSwitch = withStyles({
     switchBase: {
-      color: purple[300],
+      color: blueGrey[300],
       "&$checked": {
-        color: purple[500],
+        color: cyan[500],
       },
       "&$checked + $track": {
-        backgroundColor: purple[500],
+        backgroundColor: cyan[500],
       },
     },
     checked: {},
@@ -125,62 +127,85 @@ const App = () => {
     // console.log(event.target.checked);
     return setDarkMode(event.target.checked);
   };
+
+  const applyDarkMode = darkMode ? "white" : "black";
+
   return (
     <div className={`app ${darkMode && "app__dark"}`}>
-      <div className="app__left">
+      <motion.div
+        initial={{
+          x: -600,
+          opacity: 0.4,
+        }}
+        animate={{
+          x: 0,
+          opacity: 1,
+          transition: {
+            duration: 1.5,
+            ease: "easeInOut",
+          },
+        }}
+        className="app__left"
+      >
         <div className="app__header">
-          <h1 style={{ color: `${darkMode ? "white" : "black"}` }}>
-            Covid19 tracker app
-          </h1>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <PurpleSwitch
-                  checked={darkMode}
-                  onChange={handleChange}
-                  name="toggler"
-                />
-              }
-              label="Dark Mode"
-            />
-          </FormGroup>
-          <FormControl
-            className="app__dropdown"
-            style={{
-              backgroundColor: `${darkMode ? "black" : "white"}`,
-              border: `${darkMode ? "2px solid white" : "None"}`,
-            }}
-          >
-            <InputLabel
-              id="label"
+          <div className="app__logo">
+            <CovidLogo darkMode={darkMode}></CovidLogo>
+          </div>
+
+          <div className="app__header__content">
+            <h1 style={{ color: `${applyDarkMode}` }}>Covid19 Tracker</h1>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <PurpleSwitch
+                    checked={darkMode}
+                    onChange={handleChange}
+                    name="toggler"
+                  />
+                }
+                labelPlacement="start"
+                label="Dark Mode"
+              />
+            </FormGroup>
+            <FormControl
+              className="app__dropdown"
               style={{
-                color: `${darkMode ? "white" : "black"}`,
-                fontSize: "20px",
+                backgroundColor: `${darkMode ? "black" : "white"}`,
+                border: `${darkMode ? "2px solid white" : "None"}`,
               }}
             >
-              Country
-            </InputLabel>
-            <Select
-              labelId="label"
-              id="select"
-              variant="outlined"
-              value={country}
-              style={{
-                color: `${darkMode ? "white" : "black"}`,
-                width: "150px",
-              }}
-              onChange={changeCountry}
-            >
-              <MenuItem value="Worldwide">Worldwide</MenuItem>
-              {countries.map((country, key) => {
-                return (
-                  <MenuItem key={key} value={country.value}>
-                    {country.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
+              <InputLabel
+                id="label"
+                style={{
+                  color: `${applyDarkMode}`,
+                  fontSize: "20px",
+                }}
+              >
+                Country
+              </InputLabel>
+              <Select
+                className="dropdown"
+                labelId="label"
+                id="select"
+                variant="outlined"
+                value={country}
+                style={{
+                  color: `${applyDarkMode}`,
+                  width: "150px",
+                }}
+                onChange={changeCountry}
+              >
+                <MenuItem value="Worldwide">Worldwide</MenuItem>
+                {countries.map((country, key) => {
+                  return (
+                    <MenuItem key={key} value={country.value}>
+                      {country.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </div>
         </div>
         <div className="app__stats">
           <InfoBox
@@ -217,8 +242,22 @@ const App = () => {
           center={mapCenter}
           zoom={mapZoom}
         ></Map>
-      </div>
-      <Card className="app__right">
+      </motion.div>
+      <motion.Card
+        className="app__right"
+        initial={{
+          x: 300,
+          opacity: 0.4,
+        }}
+        animate={{
+          x: 0,
+          opacity: 1,
+          transition: {
+            duration: 1.5,
+            ease: "easeInOut",
+          },
+        }}
+      >
         <CardContent
           className="card-content"
           style={{
@@ -227,21 +266,17 @@ const App = () => {
           }}
         >
           <div className="table__header">
-            <h3 style={{ color: `${darkMode ? "white" : "black"}` }}>
-              Live cases by country
-            </h3>
+            <h3 style={{ color: `${applyDarkMode}` }}>Live cases by country</h3>
             <FormControl>
               <InputLabel id="demo-controlled-open-select-label">
-                <strong style={{ color: `${darkMode ? "white" : "black"}` }}>
-                  Sort By
-                </strong>
+                <strong style={{ color: `${applyDarkMode}` }}>Sort By</strong>
               </InputLabel>
               <Select
                 labelId="demo-controlled-open-select-label"
                 id="demo-controlled-open-select"
                 value={value}
                 style={{
-                  color: `${darkMode ? "white" : "black"}`,
+                  color: `${applyDarkMode}`,
                 }}
                 onChange={(e) => setValue(e.target.value)}
               >
@@ -259,7 +294,7 @@ const App = () => {
           ></Table>
           <h3
             style={{
-              color: `${darkMode ? "white" : "black"}`,
+              color: `${applyDarkMode}`,
               margin: "50px 0px",
             }}
           >
@@ -272,7 +307,7 @@ const App = () => {
             casesType={casesType}
           ></LineGraph>
         </CardContent>
-      </Card>
+      </motion.Card>
     </div>
   );
 };

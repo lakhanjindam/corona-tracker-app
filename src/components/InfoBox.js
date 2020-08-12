@@ -2,9 +2,14 @@ import React from "react";
 import "./css/InfoBox.css";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import numeral from "numeral";
+import { motion } from "framer-motion";
+
 const InfoBox = ({ title, cases, total, ...props }) => {
   return (
-    <Card
+    <motion.Card
+      whileHover={{
+        scale: 1.03,
+      }}
       onClick={props.onClick}
       className="Infobox"
       style={{
@@ -57,7 +62,7 @@ const InfoBox = ({ title, cases, total, ...props }) => {
         </Typography>
         {/*Corona virus total */}
       </CardContent>
-    </Card>
+    </motion.Card>
   );
 };
 
